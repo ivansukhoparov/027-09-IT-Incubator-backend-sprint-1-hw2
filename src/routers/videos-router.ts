@@ -1,15 +1,19 @@
-import Router from "express";
+import {Router,Request, Response} from "express";
+import {ErrorType, Params, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../types/common";
+import {AvailableResolutions, VideoType} from "../types/videos/output";
+import {CreateVideoDto, UpdateVideoDto} from "../types/videos/input";
+import {db} from "../db/db";
 
 
 export const videosRouter = Router()
 
 videosRouter.get("/", (req:Request, res:Response):void=>{
-    res.send(videos);
+    res.send(db.videos);
 })
 
 videosRouter.get("/:id", (req:RequestWithParams<Params> ,res:Response):void=>{
     const id: number = +req.params.id;
-    const video:VideoType|undefined = videos.find((el)=> el.id === id);
+    const video:VideoType|undefined = db.videos.find((el)=> el.id === id);
     if (!video) {
         res.sendStatus(404)
     }else{
@@ -61,14 +65,14 @@ videosRouter.post("/", (req:RequestWithBody<CreateVideoDto>,res:Response):void=>
         availableResolutions : availableResolutions
     }
 
-    videos.push(newVideo);
+    db.videos.push(newVideo);
     res.status(201).send(newVideo);
 })
 
 videosRouter.put("/:id", (req: RequestWithBodyAndParams<Params, UpdateVideoDto>, res:Response):void=> {
     const id: number = +req.params.id;
-    const videoIndex = videos.findIndex((v) => v.id === id);
-    const video  = videos.find((v) => v.id == id);
+    const videoIndex = db.videos.findIndex((v) => v.id === id);
+    const video  = db.videos.find((v) => v.id == id);
 
     let errors: ErrorType = {
         errorsMessages: []
@@ -114,15 +118,10 @@ videosRouter.put("/:id", (req: RequestWithBodyAndParams<Params, UpdateVideoDto>,
     }
 
     const dateTest = new RegExp("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z")
-    if (!dateTest.test(publicationDate)){
-        errors.errorsMessages.push({
-            message: "Invalid publicationDate",
-            field: "publicationDate"
-        });
-    }
-    if(!publicationDate && video){
+    if (!dateTest.test(publicationDate) && video){
         publicationDate = video.publicationDate;
     }
+
 
     if (errors.errorsMessages.length>0){
         res.status(400).send(errors);
@@ -144,19 +143,19 @@ videosRouter.put("/:id", (req: RequestWithBodyAndParams<Params, UpdateVideoDto>,
             availableResolutions: availableResolutions
         };
 
-        videos.splice(videoIndex,1,updateItem);
+        db.videos.splice(videoIndex,1,updateItem);
         res.sendStatus(204);
     }
 })
 
 videosRouter.delete("/:id", (req:RequestWithParams<Params>,res:Response):void=>{
     const id: number = +req.params.id;
-    const videoIndex = videos.findIndex((v) => v.id === id);
+    const videoIndex = db.videos.findIndex((v) => v.id === id);
     if (videoIndex<0){
         res.sendStatus(404);
         return;
     }
-    videos.splice(videoIndex,1)
+    db.videos.splice(videoIndex,1)
     res.sendStatus(204)
 })
 
