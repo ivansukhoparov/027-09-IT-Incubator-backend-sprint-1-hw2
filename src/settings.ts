@@ -6,10 +6,10 @@ import {postsRouter} from "./routers/posts-router";
 
 export const app = express();
 
-
 app.use(express.json());
 
 app.use("/testing", testingRouter);
+
 app.use("/videos", videosRouter);
 app.use("/blogs", blogsRouter);
 app.use("/posts", postsRouter);
