@@ -1,8 +1,9 @@
-import express, {Request, Response} from "express";
 
-export const app = express();
-const port:number = 5003;
+const port:80 = 80;
 
-app.listen(port, ()=>{
-    console.log(`application start on ${port} port`);
+import {app} from "./settings";
+
+app.listen(port, ():void=>{
+    console.log(`listening port: ${port}`);
 })
+
