@@ -1,10 +1,10 @@
-export type CreateBlog ={
+export type CreateBlogDto ={
     name: string,
     description: string,
     websiteUrl: string
 }
 
-export type UpdateBlog ={
+export type UpdateBlogDto ={
     name: string,
     description: string,
     websiteUrl: string
