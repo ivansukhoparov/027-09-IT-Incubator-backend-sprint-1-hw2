@@ -33,7 +33,7 @@ blogsRouter.post('/',basicAuthorizationMiddleware,validationBlogsChains(),inputV
         res.status(HTTP_STATUSES.CREATED_201).json(newBlog);
         return
     }
-    res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400)
+    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
 })
 
 blogsRouter.put("/:id",basicAuthorizationMiddleware,validationBlogsChains(),inputValidationMiddleware, (req:RequestWithBodyAndParams<Params, UpdateBlogDto>, res:Response)=>{
@@ -43,7 +43,7 @@ blogsRouter.put("/:id",basicAuthorizationMiddleware,validationBlogsChains(),inpu
         res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
         return
     }
-    res.sendStatus(HTTP_STATUSES.BAD_REQUEST_400);
+    res.sendStatus(HTTP_STATUSES.NOT_FOUND_404);
 })
 
 blogsRouter.delete("/:id",basicAuthorizationMiddleware, (req:RequestWithParams<Params>, res:Response)=>{
