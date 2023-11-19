@@ -19,6 +19,9 @@ export const basicAuthorizationMiddleware = (req: Request, res: Response, next: 
         if (authInput === auth || authMethod === method) {
             // если пары равны переходим по цепочке дальше
             next();
+        }else {
+            // в противном случае отправляем ошибку 401
+            res.sendStatus(HTTP_STATUSES.UNAUTHORIZED_401)
         }
     } else {
         // в противном случае отправляем ошибку 401
