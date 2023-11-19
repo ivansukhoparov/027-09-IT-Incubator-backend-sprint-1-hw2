@@ -24,7 +24,7 @@ postsRouter.get("/:id", (req: RequestWithParams<Params>, res: Response) => {
     }
 })
 
-postsRouter.post('/',basicAuthorizationMiddleware,validationPostsChains,inputValidationMiddleware, (req: RequestWithBody<CreatePostDto>, res: Response) => {
+postsRouter.post('/',basicAuthorizationMiddleware,validationPostsChains(),inputValidationMiddleware, (req: RequestWithBody<CreatePostDto>, res: Response) => {
     const creatData = req.body;
     const postID = PostsRepository.createPost(creatData);
     if (postID) {
@@ -38,7 +38,7 @@ postsRouter.post('/',basicAuthorizationMiddleware,validationPostsChains,inputVal
     res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
 })
 
-postsRouter.put("/:id",basicAuthorizationMiddleware,validationPostsChains,inputValidationMiddleware, (req: RequestWithBodyAndParams<Params, UpdatePostDto>, res: Response) => {
+postsRouter.put("/:id",basicAuthorizationMiddleware,validationPostsChains(),inputValidationMiddleware, (req: RequestWithBodyAndParams<Params, UpdatePostDto>, res: Response) => {
     const updateData = req.body;
     const isUpdated = PostsRepository.updatePost(req.params.id, updateData);
     if (isUpdated) {
