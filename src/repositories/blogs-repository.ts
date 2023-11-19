@@ -3,7 +3,7 @@ import {db} from "../db/db";
 import {CreateBlogDto, UpdateBlogDto} from "../types/blogs/input";
 import {createNewId} from "../utils/comon";
 
-export class BlogRepository {
+export class BlogsRepository {
 
     // return all blogs from database
     static getAllBlogs(): BlogType[] {

@@ -1,5 +1,5 @@
 import {Router, Request, Response} from "express";
-import {BlogRepository} from "../repositories/blog-repository";
+import {BlogsRepository} from "../repositories/blogs-repository";
 import {Params, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../types/common";
 import {CreateBlogDto, UpdateBlogDto} from "../types/blogs/input";
 import {inputValidationMiddleware} from "../middlewares/validators/input-validation-middleware";
@@ -11,12 +11,12 @@ import {HTTP_STATUSES} from "../utils/comon";
 export const blogsRouter = Router();
 
 blogsRouter.get("/", (req: Request, res: Response) => {
-    const blogs = BlogRepository.getAllBlogs();
+    const blogs = BlogsRepository.getAllBlogs();
     res.status(HTTP_STATUSES.OK_200).json(blogs);
 })
 
 blogsRouter.get("/:id" , (req: RequestWithParams<Params>, res: Response) => {
-    const blog = BlogRepository.getBlogById(req.params.id);
+    const blog = BlogsRepository.getBlogById(req.params.id);
     if (blog) {
         res.status(HTTP_STATUSES.OK_200).json(blog);
         return
@@ -27,8 +27,8 @@ blogsRouter.get("/:id" , (req: RequestWithParams<Params>, res: Response) => {
 
 blogsRouter.post('/',basicAuthorizationMiddleware,validationBlogsChains(),inputValidationMiddleware, (req: RequestWithBody<CreateBlogDto>, res: Response) => {
     const creatData = req.body;
-    const blogID = BlogRepository.createBlog(creatData);
-    const newBlog = BlogRepository.getBlogById(blogID);
+    const blogID = BlogsRepository.createBlog(creatData);
+    const newBlog = BlogsRepository.getBlogById(blogID);
     if (newBlog) {
         res.status(HTTP_STATUSES.CREATED_201).json(newBlog);
         return
@@ -38,7 +38,7 @@ blogsRouter.post('/',basicAuthorizationMiddleware,validationBlogsChains(),inputV
 
 blogsRouter.put("/:id",basicAuthorizationMiddleware,validationBlogsChains(),inputValidationMiddleware, (req:RequestWithBodyAndParams<Params, UpdateBlogDto>, res:Response)=>{
     const updateData = req.body;
-    const isUpdated = BlogRepository.updateBlog(req.params.id, updateData);
+    const isUpdated = BlogsRepository.updateBlog(req.params.id, updateData);
     if (isUpdated) {
         res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
         return
@@ -47,7 +47,7 @@ blogsRouter.put("/:id",basicAuthorizationMiddleware,validationBlogsChains(),inpu
 })
 
 blogsRouter.delete("/:id",basicAuthorizationMiddleware, (req:RequestWithParams<Params>, res:Response)=>{
-    const isDeleted = BlogRepository.deleteBlog(req.params.id);
+    const isDeleted = BlogsRepository.deleteBlog(req.params.id);
     if (isDeleted){
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204);
     return;
