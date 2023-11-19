@@ -3,7 +3,7 @@ import {BlogsRepository} from "../repositories/blogs-repository";
 import {Params, RequestWithBody, RequestWithBodyAndParams, RequestWithParams} from "../types/common";
 import {CreateBlogDto, UpdateBlogDto} from "../types/blogs/input";
 import {inputValidationMiddleware} from "../middlewares/validators/input-validation-middleware";
-import {validationBlogsChains} from "../middlewares/validators/blog-validators";
+import {validationBlogsChains} from "../middlewares/validators/blogs-validators";
 import {basicAuthorizationMiddleware} from "../middlewares/auth/auth-middleware";
 import {HTTP_STATUSES} from "../utils/comon";
 
