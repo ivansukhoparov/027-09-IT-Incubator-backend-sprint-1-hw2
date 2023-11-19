@@ -16,7 +16,7 @@ export const basicAuthorizationMiddleware = (req: Request, res: Response, next: 
         const authInput = authHeader[1] // получаем значение Basic из заголовка}
 
         // сравниваем нашу пару логин:пароль закодированную в basic64 с парой, пришедшей в заголовке реквеста
-        if (authInput === auth || authMethod === method) {
+        if (authInput === auth && authMethod === method) {
             // если пары равны переходим по цепочке дальше
             next();
         }else {
