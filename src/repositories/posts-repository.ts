@@ -33,7 +33,7 @@ export class PostsRepository {
             db.posts.push(newPost);
             return newPost.id;
         }else{
-          return false
+          return null
         }
     }
 
