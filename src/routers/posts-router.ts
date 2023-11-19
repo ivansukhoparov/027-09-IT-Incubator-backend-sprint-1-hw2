@@ -4,6 +4,8 @@ import {basicAuthorizationMiddleware} from "../middlewares/auth/auth-middleware"
 import {HTTP_STATUSES} from "../utils/comon";
 import {PostsRepository} from "../repositories/posts-repository";
 import {CreatePostDto, UpdatePostDto} from "../types/posts/input";
+import {validationPostsChains} from "../middlewares/validators/posts-validators";
+import {inputValidationMiddleware} from "../middlewares/validators/input-validation-middleware";
 
 export const postsRouter = Router();
 
@@ -22,7 +24,7 @@ postsRouter.get("/:id", (req: RequestWithParams<Params>, res: Response) => {
     }
 })
 
-postsRouter.post('/', (req: RequestWithBody<CreatePostDto>, res: Response) => {
+postsRouter.post('/',basicAuthorizationMiddleware,validationPostsChains,inputValidationMiddleware, (req: RequestWithBody<CreatePostDto>, res: Response) => {
     const creatData = req.body;
     const postID = PostsRepository.createPost(creatData);
     if (postID) {
@@ -36,7 +38,7 @@ postsRouter.post('/', (req: RequestWithBody<CreatePostDto>, res: Response) => {
     res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
 })
 
-postsRouter.put("/:id", (req: RequestWithBodyAndParams<Params, UpdatePostDto>, res: Response) => {
+postsRouter.put("/:id",basicAuthorizationMiddleware,validationPostsChains,inputValidationMiddleware, (req: RequestWithBodyAndParams<Params, UpdatePostDto>, res: Response) => {
     const updateData = req.body;
     const isUpdated = PostsRepository.updatePost(req.params.id, updateData);
     if (isUpdated) {
